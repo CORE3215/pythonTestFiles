@@ -2,7 +2,7 @@
         Server with python, FastAPI
 
 Please run these commands "pip install fastapi", "pip install "uvicorn[standard]""
-Run with this command, "uvicorn serverLibraryTest:app --reload".
+Run with this command, "uvicorn main:app --reload".
 This works like nodemon! It has auto-reload.
 
     Link with Korean: "https://fastapi.tiangolo.com/ko/"
@@ -10,8 +10,9 @@ This works like nodemon! It has auto-reload.
 """
 
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
+
 
 templates = Jinja2Templates(directory="templates")
 
@@ -19,8 +20,8 @@ app = FastAPI()
 
 # This returns "{"Hello": "World"}" in web page.
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_root(request: Request):
+    return templates.TemplateResponse("index.html", {'request': request})
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
